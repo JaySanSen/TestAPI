@@ -25,7 +25,15 @@ namespace CityInfo.API.Controllers
       var cityToReturn = CitiesDataStore.Current.Cities.FirstOrDefault(city => city.Id == id);
       if (cityToReturn == null)
       {
-        return NotFound();
+        var problemDetails = new ProblemDetails()
+        {
+          Status = 404,
+          Title = "Not Found",
+          Detail = $"No city with ID {id} was found",
+          //This will return /api/Cities/10
+          Instance = HttpContext.Request.Path
+        };
+        return NotFound(problemDetails);
       }
       return Ok(cityToReturn);
     }
