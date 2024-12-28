@@ -1,3 +1,4 @@
+using CityInfo.API.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CityInfo.API.Controllers
@@ -11,9 +12,22 @@ namespace CityInfo.API.Controllers
     // [HttpGet("api/[controller]")] 
     //you can mention like this for each HTTP verb. but to maintain consistency across all the HTTP verbs use Route attribute at class/controller level
     [HttpGet]
-    public JsonResult GetCities()
+    public ActionResult<IEnumerable<CityDto>> GetCities()
     {
-      return new JsonResult(CitiesDataStore.Current.Cities);
+      // return new JsonResult(CitiesDataStore.Current.Cities);
+      return Ok(CitiesDataStore.Current.Cities);
+    }
+    [HttpGet("{id}")]
+    public ActionResult<CityDto> GetCity(int id)
+    {
+      // return new JsonResult(CitiesDataStore.Current.Cities.FirstOrDefault(cityObject => cityObject.Id == id) != null ? CitiesDataStore.Current.Cities.FirstOrDefault(cityObject => cityObject.Id == id) : "No city found");
+      // return new JsonResult(CitiesDataStore.Current.Cities.FirstOrDefault(cityObject => cityObject.Id == id));
+      var cityToReturn = CitiesDataStore.Current.Cities.FirstOrDefault(city => city.Id == id);
+      if (cityToReturn == null)
+      {
+        return NotFound();
+      }
+      return Ok(cityToReturn);
     }
 
   }

@@ -12,6 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(); // This calls registers services that are required to use controllers.
 
+//Adding problem details. This is useful when multiple servers are used and can be used to check which server is returning error.
+builder.Services.AddProblemDetails(options =>
+{
+  options.CustomizeProblemDetails = ctx =>
+  {
+    ctx.ProblemDetails.Extensions.Add("Server", Environment.MachineName);
+    ctx.ProblemDetails.Extensions.Add("test","test");
+  };
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -19,7 +28,7 @@ builder.Services.AddSwaggerGen();// Used for Swagger services
 
 
 //Once all services are configured the application can be built
- // This will create an object of web application which implements IApplicationBuilder.
+// This will create an object of web application which implements IApplicationBuilder.
 var app = builder.Build();
 
 /* Configure the HTTP request pipeline. This will inform .NET how to handle http requests also known as middleware.
@@ -37,7 +46,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
-app.UseEndpoints(endpoints =>{
+app.UseEndpoints(endpoints =>
+{
   endpoints.MapControllers();
 });
 
