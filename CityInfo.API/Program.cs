@@ -17,7 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(options =>{
   options.ReturnHttpNotAcceptable = true;// This will return 406 Not Acceptable if the format requested is not supported by the application. For example client request xml but only json is supported then the 406 error will be display if Accept Header is application/xml
-}).AddXmlDataContractSerializerFormatters();
+}).AddNewtonsoftJson()
+.AddXmlDataContractSerializerFormatters();
 
 //AddXmlDataContractSerializerFormatters will add xml format as additional supported format other than json format (json is usually default).
 
