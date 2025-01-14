@@ -46,6 +46,7 @@ Middle ware is components which handle these requests.
 Middle ware is software component which are assemblies in an application pipeline to handle requests and response. Order in which we add middle ware is important.
 */
 
+app.UseExceptionHandler();
 /*checks whether we are running in Development Environment. Only if we are running in Developement environment Swagger middleware is triggered.*/
 if (app.Environment.IsDevelopment())
 {

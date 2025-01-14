@@ -11,12 +11,19 @@ namespace CityInfo.API.Controllers
   [Route("api/cities/{cityId}/[controller]")]
   public class PointOfInterestController : ControllerBase
   {
+    private readonly ILogger<PointOfInterestController> _logger;
+    public PointOfInterestController(ILogger<PointOfInterestController> logger)
+    {
+      _logger = logger?? throw new ArgumentNullException(nameof(logger));
+    }
+
     [HttpGet]
     public ActionResult<IEnumerable<PointOfInterestDto>> GetPointsOfInterest(int cityId)
     {
       var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
       if (city == null)
       {
+        _logger.LogInformation("City was not found");
         return NotFound();
       }
       else
